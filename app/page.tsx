@@ -1,95 +1,44 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
 import styles from "./page.module.css";
+import dynamic from "next/dynamic";
+import bot_img from "@/public/static/bot.gif";
+import Image from "next/image";
+import SketchGallery from "./(components)/(profile)/SketchGallery";
+import LoadingComponent from "./(components)/loader/LoadingComponent";
+const Navbar = dynamic(() => import("./(components)/Navbar"), { ssr: false, loading: () => <LoadingComponent height={50}/> });
+const ProfilePic = dynamic(() => import("./(components)/(profile)/ProfilePic"), { ssr: false, loading: () => <LoadingComponent height={700}/> });
+const About = dynamic(() => import("./(components)/About"), { ssr: false, loading: () => <LoadingComponent height={960}/> });
+const Banner = dynamic(() => import("./(components)/Banner"), { ssr: false, loading: () => <LoadingComponent height={220}/> });
+const InfiniteSkills = dynamic(() => import("./(components)/InfiniteSkills"), { ssr: false, loading: () => <LoadingComponent height={230}/> });
+const Projects = dynamic(() => import("./(components)/Projects"), { ssr: false, loading: () => <LoadingComponent height={490}/> });
+const Education = dynamic(() => import("./(components)/Education"), { ssr: false, loading: () => <LoadingComponent height={800}/> });
+const Footer = dynamic(() => import("./(components)/Footer"), { ssr: false, loading: () => <LoadingComponent height={900}/> });
+const Background = dynamic(() => import("./(components)/animarion/Background"), { ssr: false });
+const Skills = dynamic(() => import("./(components)/Skills"), { ssr: false, loading: () => <LoadingComponent height={450}/> });
+const CoursesComponent = dynamic(() => import("./(components)/Courses/Courses"), { ssr: false, loading: () => <LoadingComponent height={400}/> });
 
 export default function Home() {
   return (
     <div className={styles.page}>
+      <Navbar />
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
+        <Background />
+        <ProfilePic />
+        <InfiniteSkills />
+        <About />
+        <Banner />
+        <Skills />
+        <Projects />
+        <CoursesComponent />
+        <Education />
+        <SketchGallery />
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <Footer />
+      <Link href={"/Bot"} style={{ position: "fixed", right: "10px", bottom: "10px" }}>
+        <Image src={bot_img} width={50} height={50} alt="BOT" title="Chat With Bot" />
+      </Link>
     </div>
   );
 }

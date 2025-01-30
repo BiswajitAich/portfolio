@@ -1,0 +1,46 @@
+.theme_div {
+    width: 168px;
+    padding: 1rem;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: xxx-large;
+    justify-content: center;
+    height: 70px;
+    background: var(--theme);
+    transition: all 1s ease;
+    cursor: pointer;
+    border: 5px solid transparent;
+}
+
+.theme_div:hover {
+    border: 5px solid black;
+}
+
+.theme_div:hover span {
+    animation: move 1s ease 0.2s infinite;
+}
+
+@keyframes move {
+    0% {
+        transform: rotate(0deg) tra;
+    }
+
+    30% {
+        transform: rotate(45deg);
+    }
+
+    60% {
+        transform: rotate(0deg);
+    }
+
+    90% {
+        transform: rotate(-45deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+
+}

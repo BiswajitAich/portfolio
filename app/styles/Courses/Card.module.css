@@ -1,0 +1,93 @@
+.card {
+    position: relative;
+    height: 300px;
+    aspect-ratio: 3/4;
+    background: transparent;
+    z-index: 1;
+    margin: 2rem;
+    transition: transform 0.5s ease;
+}
+.card:hover {
+    transform: scale(1.1);
+}
+.card:hover .div5{
+    background: var(--cyan-d);
+}
+
+.card p {
+    position: absolute;
+    background: var(--white);
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0.5rem;
+    text-wrap-mode: nowrap;
+    font-size: smaller;
+    font-weight: 700;
+}
+
+.card img {
+    border-radius: 50%;
+    position: absolute;
+    background: var(--white);
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.div1 {
+    background: var(--black);
+    width: 100%;
+    height: 188px;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+}
+
+.div2 {
+    position: absolute;
+    height: 155px;
+    background: var(--black);
+    bottom: 19px;
+    aspect-ratio: 1;
+    transform: rotate(45deg);
+    left: 36px;
+    border-radius: 2rem;
+}
+
+.div3 {
+    width: 100px;
+    aspect-ratio: 1;
+    background: var(--black);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+}
+
+.div4 {
+    width: 100px;
+    aspect-ratio: 1;
+    background: var(--black);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+}
+
+.div5 {
+    width: calc(100% + 1rem);
+    aspect-ratio: 2;
+    background: var(--theme);
+    position: absolute;
+    z-index: 9;
+    top: 45%;
+    border: 2px solid var(--cyan-d);
+    padding: 1rem;
+    left: -0.5rem;
+    border-radius: 0.5rem;
+    transform: translateY(-70%);
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+}

@@ -1,0 +1,76 @@
+.aniContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    z-index: -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-auto-rows: 50px;
+    gap: 0;
+    overflow: hidden;
+    animation: backgroundFlow 10s ease-in-out infinite;
+}
+
+.bgAni {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border-radius: 2px;
+    transition: background-color 0.5s ease-out;
+    /* background: #00bfff; */
+    filter: blur(2rem);
+    animation: pulse 6s ease-in-out infinite, move 4s ease-in-out infinite;
+}
+
+@keyframes backgroundFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: blur(1.5rem);
+    }
+
+    50% {
+        transform: scale(1.1);
+        filter: blur(2rem);
+    }
+}
+
+@keyframes move {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(10px, -10px);
+    }
+
+    50% {
+        transform: translate(0, 10px);
+    }
+
+    75% {
+        transform: translate(-10px, 0);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}

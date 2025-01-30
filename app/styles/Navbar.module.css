@@ -1,0 +1,91 @@
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, var(--white0), var(--white-t4));
+  color: var(--black6);
+  position: relative;
+  overflow: visible;
+  font-weight: 600;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 100%);
+  padding-left: 10%;
+  border-bottom: 1px solid var(--cyan-d);
+  top: 0;
+  min-height: 50px;
+  position: sticky;
+  z-index: 2;
+  backdrop-filter: blur(3px);
+  filter: drop-shadow(0px 0px 10px var(--black));
+}
+
+.nav {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+.navItem {
+  margin-right: 20px;
+  white-space: nowrap;
+  padding: 0 0.5rem;
+  border-bottom: 2px solid transparent;
+  border-radius: 0.5rem;
+}
+
+.navItem:hover {
+  /* box-shadow: 0 0 0.4rem var(--black-t2); */
+  background: var(--white-t2);
+  border-bottom: 2px solid var(--cyan-d);
+}
+
+.navItem:last-child {
+  margin-right: 0;
+}
+
+.burgerMenu {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.burgerButton {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.burgerDropdown {
+  position: fixed;
+  top: auto;
+  right: 0;
+  background-color: var(--white0);
+  list-style: none;
+  padding: 10px;
+  border: 1px solid #ccc;
+  z-index: 9;
+}
+
+
+.burgerItem {
+  padding: 10px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  background: var(--white2);
+  margin-bottom: 2px;
+}
+
+.burgerItem:hover {
+  background-color: var(--white8);
+}
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .navItem {
+    margin-right: 10px;
+  }
+}

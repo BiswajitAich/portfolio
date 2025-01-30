@@ -1,0 +1,73 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: max(85%, 600px);
+    background: var(--white0);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.container h1 {
+    /* margin: 0 2rem; */
+    padding: 1rem;
+    border-bottom: 2px solid var(--cyan-d);
+    background: var(--black0);
+    color: var(--theme);
+}
+
+.innerContainer {
+    display: flex;
+    overflow: auto;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    background: var(--white2);
+    margin: 1rem;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 1rem;
+    margin: 1rem;
+    border-bottom: 2px solid var(--black);
+}
+
+.certificateBy, .h_skills {
+    background: var(--white4);
+    padding: 0.5rem;
+}
+
+/* .courseName {}
+
+.h_skills {
+
+} */
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 1rem;
+}
+.skills p{
+    padding: 0.5rem;
+    background: var(--white6);
+    border-radius: 1rem;
+}
+/* .completedBy {}
+
+.date {}
+
+.time {}
+
+.grade {} */
+
+@media screen and (max-width: 500px) {
+    .innerContainer{
+        padding: 0;
+        margin: 1rem 0;
+    }
+}

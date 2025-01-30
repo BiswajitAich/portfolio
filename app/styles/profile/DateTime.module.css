@@ -1,0 +1,10 @@
+.date{
+    max-width: max-content;
+    display: inline-flex;
+    padding: min(4vw, 10%);
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+}
+.year{
+    transform: rotateZ(-90deg);
+    max-width: fit-content;
+}
