@@ -25,12 +25,12 @@ const CodingSkills: React.FC = () => {
         {
             name: "Javascript",
             img: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-            value: 95
+            value: 85
         },
         {
             name: "Typescript",
             img: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg",
-            value: 90
+            value: 80
         },
         {
             name: "Python",
@@ -40,27 +40,27 @@ const CodingSkills: React.FC = () => {
         {
             name: "Java",
             img: "https://img.icons8.com/?size=100&id=GPfHz0SM85FX&format=png&color=000000",
-            value: 50
+            value: 80
         },
         {
             name: "C++",
             img: "https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg",
-            value: 80
+            value: 75
         },
         {
             name: "Tensorflow",
             img: "https://img.icons8.com/?size=100&id=n3QRpDA7KZ7P&format=png&color=000000",
-            value: 80
+            value: 90
         },
         {
             name: "Pytorch",
             img: "https://img.icons8.com/?size=100&id=jH4BpkMnRrU5&format=png&color=000000",
-            value: 75
+            value: 90
         },
         {
             name: "NextJs",
             img: "https://img.icons8.com/?size=100&id=MWiBjkuHeMVq&format=png&color=000000",
-            value: 92
+            value: 95
         },
     ]
 

@@ -5,7 +5,7 @@ interface type {
 }
 const Banner = () => {
     const data: type[] = [
-        { total: 2, title: "Projects" },
+        { total: 4, title: "Projects" },
         { total: 10, title: "Skills" },
         { total: 50, title: "Courses" },
         { total: 3, title: "Languages" },

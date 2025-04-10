@@ -12,6 +12,18 @@ interface AllCourseTypes extends CourseTypes {
 export default () => {
     const courseData: AllCourseTypes[] = [
         {
+            link: "https://coursera.org/share/7d4daff3c94f476801a1da653adf1d42",
+            courseName: "Deep Learning Specialization",
+            certificateBy: "DeepLearning.AI",
+            img: "/static/deeplearning_Icon.png",
+            details: {
+                skills: ["Algorithms","Artificial", "Neural", "Network", "Transformers", "Data Analysis", "Recurrent Neural Network", "Computer Programming", "Mathematics", "Human Learning", "Convolutional Neural Network", "Calculus", "Machine Learning", "Network Architecture"],
+                date: "January 12, 2023",
+                time: "Approximately 3 months at 10 hours a week to complete",
+                grade: ""
+            }
+        },
+        {
             link: "https://coursera.org/share/c6fef3dc2e66430e3a43247c3efc31fc",
             courseName: "Natural Language Processing",
             certificateBy: "DeepLearning.AI",
@@ -45,6 +57,18 @@ export default () => {
                 date: "September 2, 2024",
                 time: "3 hours (approximately)",
                 grade: "Grade Achieved: 93.33%"
+            }
+        },
+        {
+            link: "https://coursera.org/share/1bba290725b1f21cc7cb85b5c8fb1c61",
+            courseName: "Metaverse",
+            certificateBy: "Google meta",
+            img: "/static/coursera.png",
+            details: {
+                skills: ["Innovation", "Game Engines", "Marketing", "Blockchain and Cryptocurrency", "NFTs", "BlockChain", "Human Computer Interaction", "Market Research", "Finance", "Organizational Development", "Extended Reality", "Content Creation"],
+                date: "November 13, 2022",
+                time: "9 hours (approximately)",
+                grade: "Grade Achieved: 100%"
             }
         }
     ]
