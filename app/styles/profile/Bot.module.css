@@ -37,10 +37,11 @@
 .botMessage {
     padding:  10px;
     border-radius: 10px;
-    max-width: min(80%, 400px);
+    max-width: min(80%, 600px);
     word-wrap: break-word;
     position: relative;
     width: 100%;
+    font-family: auto;
 }
 
 .senderImg{

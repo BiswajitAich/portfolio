@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from '@/app/styles/profile/Bot.module.css';
 import Image from 'next/image';
 import bot from "@/public/static/bot.gif";
@@ -10,18 +10,18 @@ interface Message {
     text: string
 }
 
-interface HealthState {
-    message: string,
-    isOnline: boolean,
-    isChecking: boolean
-}
+// interface HealthState {
+//     message: string,
+//     isOnline: boolean,
+//     isChecking: boolean
+// }
 
-interface BotResponse {
-    response: {
-        output: string
-    },
-    status: string
-}
+// interface BotResponse {
+//     response: {
+//         output: string
+//     },
+//     status: string
+// }
 
 const Bot = () => {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -29,49 +29,49 @@ const Bot = () => {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const [wordCount, setWordCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
-    const [health, setHealth] = useState<HealthState>({
-        message: "Checking server status please wait...",
-        isOnline: false,
-        isChecking: false
-    });
+    // const [health, setHealth] = useState<HealthState>({
+    //     message: "Checking server status please wait...",
+    //     isOnline: false,
+    //     isChecking: false
+    // });
     const CHAR_LIMIT = 100;
 
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
+    // useEffect(() => {
+    //     let interval: NodeJS.Timeout;
 
-        const checkHealth = async () => {
-            setHealth(prev => ({ ...prev, isChecking: true }));
-            try {
-                const res = await fetch("/api/check-bot-health");
+    //     const checkHealth = async () => {
+    //         setHealth(prev => ({ ...prev, isChecking: true }));
+    //         try {
+    //             const res = await fetch("/api/check-bot-health");
 
-                if (!res.ok) {
-                    throw new Error(`Server responded with status: ${res.status}`);
-                }
+    //             if (!res.ok) {
+    //                 throw new Error(`Server responded with status: ${res.status}`);
+    //             }
 
-                const data = await res.json();
+    //             const data = await res.json();
 
-                if (data.health === "ok") {
-                    setHealth(prev => ({ ...prev, message: "Server is online", isOnline: true }));
-                    interval = setInterval(() => {
-                        setHealth(prev => ({ ...prev, isChecking: false }));
-                    }, 2000);
-                } else {
-                    setHealth(prev => ({ ...prev, message: "Something went wrong." }));
-                    throw new Error("Server health check failed");
-                }
-            } catch (error) {
-                setHealth(prev => ({
-                    ...prev,
-                    message: "Server is currently unavailable. Please try again later.",
-                    isOnline: false
-                }));
-            }
-        };
+    //             if (data.health === "ok") {
+    //                 setHealth(prev => ({ ...prev, message: "Server is online", isOnline: true }));
+    //                 interval = setInterval(() => {
+    //                     setHealth(prev => ({ ...prev, isChecking: false }));
+    //                 }, 2000);
+    //             } else {
+    //                 setHealth(prev => ({ ...prev, message: "Something went wrong." }));
+    //                 throw new Error("Server health check failed");
+    //             }
+    //         } catch (error) {
+    //             setHealth(prev => ({
+    //                 ...prev,
+    //                 message: "Server is currently unavailable. Please try again later.",
+    //                 isOnline: false
+    //             }));
+    //         }
+    //     };
 
-        checkHealth();
+    //     checkHealth();
 
-        return () => clearInterval(interval);
-    }, []);
+    //     return () => clearInterval(interval);
+    // }, []);
 
     const getBotResponse = async (input: string) => {
         try {
@@ -82,8 +82,10 @@ const Bot = () => {
                 },
                 body: JSON.stringify({ body: input })
             });
-            const data: BotResponse = await res.json();
-            return data.response.output || "Sorry, I didn't understand that.";
+            const data = await res.json();
+            console.log("data response answer:",data.response.answer);
+            
+            return data.response.answer || "Sorry, I didn't understand that.";
         } catch (error) {
             console.error("Error fetching bot response:", error);
             return "An error occurred. Please try again.";
@@ -189,11 +191,19 @@ const Bot = () => {
                         }
                     }}
                 />
-                <button
+                {/* <button
                     onClick={handleSendMessage}
                     className={styles.sendButton}
                     disabled={loading || !health.isOnline || health.isChecking}
                     style={{ background: loading || !health.isOnline ? "#051669" : "" }}
+                >
+                    Send
+                </button> */}
+                <button
+                    onClick={handleSendMessage}
+                    className={styles.sendButton}
+                    disabled={loading}
+                    style={{ background: loading ? "#051669" : "" }}
                 >
                     Send
                 </button>
@@ -201,7 +211,7 @@ const Bot = () => {
             <div className={styles.wordCounter}>
                 {wordCount}/{CHAR_LIMIT} words
             </div>
-            {health.isChecking && (
+            {/* {health.isChecking && (
                 <span
                     className={styles.warning}
                     style={{
@@ -211,7 +221,7 @@ const Bot = () => {
                 >
                     {health.message}
                 </span>
-            )}
+            )} */}
         </div>
     );
 };
