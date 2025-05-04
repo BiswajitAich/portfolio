@@ -22,7 +22,7 @@ const Bot = () => {
     const getBotResponse = async (input: string) => {
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 20000);
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
             const res = await fetch('/api/get-bot-response', {
                 method: "POST",
                 headers: {
@@ -54,7 +54,7 @@ const Bot = () => {
     const handleSendMessage = async () => {
         if (input.trim() === '') return;
         setLoading(true);
-        
+        setInput('');
         const userMessage: Message = { text: input, sender: 'user' };
         setMessages(prevMessages => [...prevMessages, userMessage]);
         
@@ -73,7 +73,6 @@ const Bot = () => {
             ]);
         } finally {
             setLoading(false);
-            setInput('');
             if (textareaRef.current) {
                 textareaRef.current.style.height = 'auto';
             }
