@@ -10,68 +10,14 @@ interface Message {
     text: string
 }
 
-// interface HealthState {
-//     message: string,
-//     isOnline: boolean,
-//     isChecking: boolean
-// }
-
-// interface BotResponse {
-//     response: {
-//         output: string
-//     },
-//     status: string
-// }
-
 const Bot = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const [wordCount, setWordCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
-    // const [health, setHealth] = useState<HealthState>({
-    //     message: "Checking server status please wait...",
-    //     isOnline: false,
-    //     isChecking: false
-    // });
+
     const CHAR_LIMIT = 100;
-
-    // useEffect(() => {
-    //     let interval: NodeJS.Timeout;
-
-    //     const checkHealth = async () => {
-    //         setHealth(prev => ({ ...prev, isChecking: true }));
-    //         try {
-    //             const res = await fetch("/api/check-bot-health");
-
-    //             if (!res.ok) {
-    //                 throw new Error(`Server responded with status: ${res.status}`);
-    //             }
-
-    //             const data = await res.json();
-
-    //             if (data.health === "ok") {
-    //                 setHealth(prev => ({ ...prev, message: "Server is online", isOnline: true }));
-    //                 interval = setInterval(() => {
-    //                     setHealth(prev => ({ ...prev, isChecking: false }));
-    //                 }, 2000);
-    //             } else {
-    //                 setHealth(prev => ({ ...prev, message: "Something went wrong." }));
-    //                 throw new Error("Server health check failed");
-    //             }
-    //         } catch (error) {
-    //             setHealth(prev => ({
-    //                 ...prev,
-    //                 message: "Server is currently unavailable. Please try again later.",
-    //                 isOnline: false
-    //             }));
-    //         }
-    //     };
-
-    //     checkHealth();
-
-    //     return () => clearInterval(interval);
-    // }, []);
 
     const getBotResponse = async (input: string) => {
         try {
@@ -82,10 +28,19 @@ const Bot = () => {
                 },
                 body: JSON.stringify({ body: input })
             });
-            const data = await res.json();
-            console.log("data response answer:",data.response.answer);
             
-            return data.response.answer || "Sorry, I didn't understand that.";
+            if (!res.ok) {
+                throw new Error('Failed to get response');
+            }
+            
+            const data = await res.json();
+            
+            // Check if response has the expected structure
+            if (data.response && data.status === "ok") {
+                return data.response.answer || "Sorry, I didn't understand that.";
+            } else {
+                return "Sorry, I couldn't process that request.";
+            }
         } catch (error) {
             console.error("Error fetching bot response:", error);
             return "An error occurred. Please try again.";
@@ -95,25 +50,29 @@ const Bot = () => {
     const handleSendMessage = async () => {
         if (input.trim() === '') return;
         setLoading(true);
+        
+        const userMessage: Message = { text: input, sender: 'user' };
+        setMessages(prevMessages => [...prevMessages, userMessage]);
+        
         try {
-            const userMessage: Message = { text: input, sender: 'user' };
-            setMessages(prevMessages => [...prevMessages, userMessage]);
-
             const botResponse = await getBotResponse(input);
             const botMessage: Message = { 
                 text: typeof botResponse === 'string' ? botResponse : "Sorry, I didn't understand that.", 
                 sender: 'bot' 
             };
             setMessages(prevMessages => [...prevMessages, botMessage]);
-
         } catch (error) {
             console.error("Error handling message:", error);
+            setMessages(prevMessages => [
+                ...prevMessages, 
+                { text: "Sorry, an error occurred. Please try again.", sender: 'bot' }
+            ]);
         } finally {
             setLoading(false);
             setInput('');
-        }
-        if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
+            if (textareaRef.current) {
+                textareaRef.current.style.height = 'auto';
+            }
         }
     };
 
@@ -122,7 +81,7 @@ const Bot = () => {
         const len = text.length;
         if (len <= CHAR_LIMIT) {
             setInput(text);
-            setWordCount(len === 0 ? 0 : len);
+            setWordCount(len);
         }
 
         if (textareaRef.current) {
@@ -191,14 +150,6 @@ const Bot = () => {
                         }
                     }}
                 />
-                {/* <button
-                    onClick={handleSendMessage}
-                    className={styles.sendButton}
-                    disabled={loading || !health.isOnline || health.isChecking}
-                    style={{ background: loading || !health.isOnline ? "#051669" : "" }}
-                >
-                    Send
-                </button> */}
                 <button
                     onClick={handleSendMessage}
                     className={styles.sendButton}
@@ -209,19 +160,8 @@ const Bot = () => {
                 </button>
             </div>
             <div className={styles.wordCounter}>
-                {wordCount}/{CHAR_LIMIT} words
+                {wordCount}/{CHAR_LIMIT} characters
             </div>
-            {/* {health.isChecking && (
-                <span
-                    className={styles.warning}
-                    style={{
-                        border: health.isOnline ? '4px solid green' : '4px solid red',
-                        boxShadow: health.isOnline ? '0 0 1rem green' : '0 0 1rem red'
-                    }}
-                >
-                    {health.message}
-                </span>
-            )} */}
         </div>
     );
 };

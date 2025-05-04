@@ -38,42 +38,65 @@
 
 export async function POST(req: Request) {
     const API = process.env.NODE_ENV_BOT_API2;
+    
     try {
         const { body } = await req.json();
-        if (!API || !body) return new Response(JSON.stringify({
-            response: "something went wrong!",
-            status: "notok"
-        }))
+        
+        if (!API || !body) {
+            return new Response(
+                JSON.stringify({
+                    response: { answer: "Sorry, I couldn't process your request." },
+                    status: "notok"
+                }),
+                { status: 400 }
+            );
+        }
 
         try {
             const res = await fetch(`${API}`, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ question: body })
-            })
+            });
+            
             const result = await res.json();
-            console.log("result::", result);
-            // console.log("result::", JSON.stringify({ question: body }));
-            // console.log("api::", API);
-
+            console.log("Result from API:", result);
+            
             if (res.ok) {
-                console.log("res ok");
-                
-                return new Response(JSON.stringify({
-                    response: result,
-                    ststus: "ok"
-                }));
+                return new Response(
+                    JSON.stringify({
+                        response: result,
+                        status: "ok"
+                    }),
+                    { status: 200 }
+                );
+            } else {
+                return new Response(
+                    JSON.stringify({
+                        response: { answer: "Sorry, the service is unavailable right now." },
+                        status: "notok"
+                    }),
+                    { status: res.status }
+                );
             }
         } catch (error) {
-            return new Response(JSON.stringify({
-                response: "something went wrong!",
-                status: "notok"
-            }))
+            console.error("Error fetching from external API:", error);
+            return new Response(
+                JSON.stringify({
+                    response: { answer: "Sorry, an error occurred while processing your request." },
+                    status: "notok"
+                }),
+                { status: 500 }
+            );
         }
     } catch (error) {
-        return new Response(JSON.stringify({
-            response: "something went wrong!",
-            status: "notok"
-        }))
+        console.error("Error parsing request:", error);
+        return new Response(
+            JSON.stringify({
+                response: { answer: "Invalid request format." },
+                status: "notok"
+            }),
+            { status: 400 }
+        );
     }
 }
