@@ -21,12 +21,17 @@ const Bot = () => {
 
     const getBotResponse = async (input: string) => {
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 20000);
             const res = await fetch('/api/get-bot-response', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ body: input })
+                body: JSON.stringify({ body: input }),
+                signal: controller.signal
+            }).finally(() => {
+                clearTimeout(timeoutId);
             });
             
             if (!res.ok) {
@@ -35,7 +40,6 @@ const Bot = () => {
             
             const data = await res.json();
             
-            // Check if response has the expected structure
             if (data.response && data.status === "ok") {
                 return data.response.answer || "Sorry, I didn't understand that.";
             } else {
