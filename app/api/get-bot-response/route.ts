@@ -33,7 +33,7 @@ export async function POST(req: Request) {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 45000); 
                     
-                    const res = await fetch(`${API}`, {
+                    const res = await fetch(`${API}/chat`, {
                         method: 'POST',
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ question: body }),

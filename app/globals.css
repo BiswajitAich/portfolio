@@ -55,7 +55,7 @@ html[data-theme="dark"] {
   --black-t6: rgba(255, 255, 255, 0.6);
   --black-t8: rgba(255, 255, 255, 0.8);
 
-  --box: lightcyan;
+  --box: rgba(224, 255, 255, 0.877);
   --cyan-d: lightcyan;
 
   --theme: rgba(33, 79, 134);
