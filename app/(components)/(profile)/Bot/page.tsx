@@ -19,7 +19,7 @@ const Bot = () => {
     const [wordCount, setWordCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [isOnline, setIsOnline] = useState<boolean>(false);
-    const [displayStatusMessage, setDisplayStatusMessage] = useState<boolean>(false);
+    const [displayStatusMessage, setDisplayStatusMessage] = useState<boolean>(true);
 
     const CHAR_LIMIT = 100;
 
