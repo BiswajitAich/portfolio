@@ -3,7 +3,7 @@ export async function GET() {
     try {
         if (!API) return new Response(JSON.stringify({ health: "notok" }));
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 45000);
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
         const res = await fetch(`${API}/health`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" },
