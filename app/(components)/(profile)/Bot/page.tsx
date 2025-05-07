@@ -37,23 +37,23 @@ const Bot = () => {
         const urlRegex = /(https?:\/\/[^\s]+)/g;
         const parts = text.split(urlRegex);
 
-        const urls = text.match(urlRegex) || [];
         const result: React.ReactNode[] = [];
 
         parts.forEach((part, i) => {
-            result.push(part);
-            if (urls[i]) {
+            if (urlRegex.test(part)) {
                 result.push(
                     <a
                         key={i}
-                        href={urls[i]}
+                        href={part}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.botLink}
                     >
-                        {urls[i]}
+                    {part}
                     </a>
                 );
+            } else {
+                result.push(part);
             }
         });
 
