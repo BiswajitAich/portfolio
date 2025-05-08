@@ -12,7 +12,7 @@ interface Message {
 const Bot = () => {
     const [message, setMessage] = useState<Message>({
         q: "",
-        ans: "Hi How can I help you!\nAsk me anything about Biswajit Aich..."
+        ans: "Hi How can I help you!\nAsk me anything about Biswajit Aich...\n You can ask me any 3 question you want!"
     });
     const [input, setInput] = useState('');
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -20,6 +20,7 @@ const Bot = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [isOnline, setIsOnline] = useState<boolean>(false);
     const [displayStatusMessage, setDisplayStatusMessage] = useState<boolean>(true);
+    const [statusMessage, setStatusMessage] = useState<String>("Checking Assistant Status...");
 
     const CHAR_LIMIT = 100;
 
@@ -49,7 +50,7 @@ const Bot = () => {
                         rel="noopener noreferrer"
                         className={styles.botLink}
                     >
-                    {part}
+                        {part}
                     </a>
                 );
             } else {
@@ -62,6 +63,7 @@ const Bot = () => {
 
     const checkBotStatus = async () => {
         try {
+            setStatusMessage("Checking Assistant Status...");
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10005);
             const res = await fetch('/api/check-bot-health', {
@@ -96,6 +98,8 @@ const Bot = () => {
         } catch (error) {
             setIsOnline(false);
             throw new Error('Failed to get status(checkBotStatus)');
+        } finally {
+            setStatusMessage("");
         }
     }
 
@@ -114,7 +118,7 @@ const Bot = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ body: input }),
+                body: JSON.stringify({ question: input }),
                 signal: controller.signal
             }).finally(() => {
                 clearTimeout(timeoutId);
@@ -249,9 +253,13 @@ const Bot = () => {
             </div>
             {displayStatusMessage && (
                 <div className={styles.online} style={{ boxShadow: isOnline ? "0 0 1rem mediumspringgreen" : "0 0 1rem red" }}>
-                    <span>The Bot is: </span>
-                    <strong style={{ color: isOnline ? "mediumspringgreen" : "red" }}>{isOnline ? "ONLINE" : "OFFLINE"}</strong>
-                    {!isOnline && <p>It may take a minute for the backend to restart. come back later!</p>}
+                    <span>{statusMessage}</span>
+                    {statusMessage === "" ? (<>
+                        <strong style={{ color: isOnline ? "mediumspringgreen" : "red" }}><span>Assistant is </span>{isOnline ? "ONLINE" : "OFFLINE"}</strong>
+                        {!isOnline && <p>It may take a minute for the backend to restart. come back later!</p>}
+                    </>
+                    ) : null}
+
                 </div>
             )}
         </div>

@@ -1,179 +1,58 @@
-export const maxDuration = 60; 
-//export const dynamic = 'force-dynamic'; 
-/*
-export async function POST(req: Request) {
-    const API = process.env.NODE_ENV_BOT_NEW_API;
-    
-    try {
-        const { body } = await req.json();
-        
-        if (!API || !body) {
-            return new Response(
-                JSON.stringify({
-                    response: { answer: "Sorry, I couldn't process your request." },
-                    status: "notok"
-                }),
-                { status: 400 }
-            );
-        }
+import { getUserIP } from "@/app/(utils)/ip";
+import { rateLimiter } from "@/app/(utils)/limiter";
+import { NextResponse } from "next/server";
 
-        try {
-            const encoder = new TextEncoder();
-            const stream = new TransformStream();
-            const writer = stream.writable.getWriter();
-            
-            const response = new Response(stream.readable, {
-                headers: { 'Content-Type': 'application/json' }
-            });
-            
-            // Process in background
-            (async () => {
-                try {
-                    // Add timeout using AbortController
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 45000); 
-                    
-                    const res = await fetch(`${API}/chat`, {
-                        method: 'POST',
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ question: body }),
-                        signal: controller.signal
-                    }).finally(() => {
-                        clearTimeout(timeoutId);
-                    });
-                    
-                    const result = await res.json();
-                    console.log("Result from API:", result);
-                    
-                    if (res.ok) {
-                        await writer.write(
-                            encoder.encode(JSON.stringify({
-                                response: result,
-                                status: "ok"
-                            }))
-                        );
-                    } else {
-                        await writer.write(
-                            encoder.encode(JSON.stringify({
-                                response: { answer: "Sorry, the service is unavailable right now." },
-                                status: "notok"
-                            }))
-                        );
-                    }
-                } catch (error) {
-                    console.error("Error fetching from external API:", error);
-                    
-                    if ((error as Error).name === 'AbortError') {
-                        await writer.write(
-                            encoder.encode(JSON.stringify({
-                                response: { answer: "The AI is taking too long to respond. Please try a shorter question." },
-                                status: "timeout"
-                            }))
-                        );
-                    } else {
-                        await writer.write(
-                            encoder.encode(JSON.stringify({
-                                response: { answer: "Sorry, an error occurred while processing your request." },
-                                status: "notok"
-                            }))
-                        );
-                    }
-                } finally {
-                    await writer.close();
-                }
-            })();
-            
-            return response;
-            
-        } catch (error) {
-            console.error("Error in response handling:", error);
-            return new Response(
-                JSON.stringify({
-                    response: { answer: "Sorry, an error occurred while processing your request." },
-                    status: "notok"
-                }),
-                { status: 500 }
-            );
-        }
-    } catch (error) {
-        console.error("Error parsing request:", error);
-        return new Response(
-            JSON.stringify({
-                response: { answer: "Invalid request format." },
-                status: "notok"
-            }),
-            { status: 400 }
-        );
+export const maxDuration = 60;
+
+export async function POST(req: Request) {
+    const API_URL = process.env.NODE_ENV_BOT_NEW_API;
+    const ip = await getUserIP();
+    console.log("Received request from IP:", ip);
+    console.log("API_URL configured as:", API_URL);
+    try { await rateLimiter.consume(ip, 1); }
+    catch {
+        return NextResponse.json({ answer: "Rate limit exceeded.", status: "notok" }, { status: 429 });
     }
-}
-*/
 
-export async function POST(req: Request) {
-    const API = process.env.NODE_ENV_BOT_NEW_API;
-    
+    let question: string | undefined;
     try {
-        const { body } = await req.json();
-        
-        if (!API || !body) {
-            return new Response(
-                JSON.stringify({
-                    response: { answer: "Sorry, I couldn't process your request." },
-                    status: "notok"
-                }),
-                { status: 400 }
-            );
+        ({ question } = await req.json() as { question?: string });
+    }
+    catch {
+        await rateLimiter.consume(ip, -1);
+        return NextResponse.json({ answer: "Invalid JSON.", status: "notok" }, { status: 400 });
+    }
+    if (!API_URL || !question) {
+        await rateLimiter.consume(ip, -1);
+        return NextResponse.json({ answer: "Missing question or config.", status: "notok" }, { status: 400 });
+    }
+
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), maxDuration * 1000);
+
+        const apiRes = await fetch(`${API_URL}/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+            signal: controller.signal,
+        }).finally(() => clearTimeout(timeout));
+
+        const result = await apiRes.json();
+        if (!apiRes.ok) {
+            await rateLimiter.consume(ip, -1);
+            return NextResponse.json({ answer: "Service error.", status: "notok" }, { status: apiRes.status });
         }
 
-        try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 30000);
-            const res = await fetch(`${API}/chat`, {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question: body }),
-                signal: controller.signal
-            }).finally(() => {
-                clearTimeout(timeoutId);
-            });
-            
-            const result = await res.json();
-            console.log("Result from API:", result);
-            
-            if (res.ok) {
-                return new Response(
-                    JSON.stringify({
-                        response: result,
-                        status: "ok"
-                    }),
-                    { status: 200 }
-                );
-            } else {
-                return new Response(
-                    JSON.stringify({
-                        response: { answer: "Sorry, the service is unavailable right now." },
-                        status: "notok"
-                    }),
-                    { status: res.status }
-                );
-            }
-        } catch (error) {
-            console.error("Error fetching from external API:", error);
-            return new Response(
-                JSON.stringify({
-                    response: { answer: "Sorry, an error occurred while processing your request." },
-                    status: "notok"
-                }),
-                { status: 500 }
-            );
-        }
-    } catch (error) {
-        console.error("Error parsing request:", error);
-        return new Response(
-            JSON.stringify({
-                response: { answer: "Invalid request format." },
-                status: "notok"
-            }),
-            { status: 400 }
-        );
+        // *** Return under the shape your client expects: ***
+        return NextResponse.json({
+            response: { answer: result.answer },
+            status: "ok"
+        }, { status: 200 });
+
+    } catch (err) {
+        await rateLimiter.consume(ip, -1);
+        console.error(err);
+        return NextResponse.json({ answer: "Internal error.", status: "notok" }, { status: 500 });
     }
 }
