@@ -5,6 +5,7 @@ import styles from "@/app/styles/Projects.module.css";
 import Link from 'next/link';
 import lilastoreImg from "@/public/static/lilastore.png";
 import rockPaperScissorsImg from "@/public/static/rock-paper-scissor.png";
+import projectUrl from "@/public/static/project-url.png";
 
 interface Project {
     id: string;
@@ -35,6 +36,15 @@ const projectsData: Project[] = [
         githubLink: "https://github.com/BiswajitAich/rock-paper-scissor-game",
         liveLink: "https://rock-paper-scissor-game-by-yolo.vercel.app/"
     },
+    {
+        id: 'project-url',
+        type: "Full-stack",
+        img: projectUrl,
+        field: ["Next.js", "NodeJs", "Tailwind", "Docker"],
+        description: "Url shortener and Analysis",
+        githubLink: "https://github.com/BiswajitAich/url-trimmer",
+        liveLink: "https://nytherra.vercel.app/"
+    }
 ];
 
 const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
