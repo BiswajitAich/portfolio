@@ -26,7 +26,6 @@
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    scrollbar-width: none;
     align-items: center;
     padding: 1rem;
 }

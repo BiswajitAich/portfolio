@@ -82,6 +82,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+*::-webkit-scrollbar{
+  width: 0.8rem;
+  height: 0.8rem;
+}
+*::-webkit-scrollbar-thumb{
+  transition: all ease 0.3s;
+  cursor: pointer;
+  background: linear-gradient(45deg, var(--box), transparent, var(--box));
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover{
+  background: linear-gradient(45deg, var(--box), var(--theme), var(--box));
+}
+*::-webkit-scrollbar-track{
+  border-radius: 4px;
+  background: transparent;
+  border: 2px solid var(--white0);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

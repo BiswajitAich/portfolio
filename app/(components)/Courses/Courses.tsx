@@ -52,7 +52,7 @@ const Courses: React.FC = () => {
     }
     return (
         <>
-            <h2 id="courseComponent"style={{ ...styles.heading, textTransform: "uppercase", textAlign: "center" }}>Cources</h2>
+            <h2 id="courseComponent"style={{ ...styles.heading, textTransform: "uppercase", textAlign: "center" }}>Courses</h2>
             <div style={styles.container}>
                 {courseData.map((item, index) => (
                     <Card
